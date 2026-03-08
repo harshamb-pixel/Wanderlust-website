@@ -1,0 +1,146 @@
+body{
+    font-family: "Plus Jakarta Sans", sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ececec;
+    padding: 1rem;
+}
+
+.fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color : #222222 !important;
+    font-weight: bold;
+
+}
+.show-img{
+    height: 50vh;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+/* Footer */
+.f-info-links a{
+    color: #222222;
+    text-decoration: none;
+}
+
+.f-info-links a:hover{
+    color: blue;
+    text-decoration: underline;
+
+}
+
+.f-info-links,
+.f-info-brand,
+.f-info-socials{
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+
+.f-info-socials i{
+   font-size: 1.2rem;
+   margin-right: 1rem;
+}
+.f-info{
+    text-align: center;
+    height: 8rem;
+    background-color: #ececec;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Cards */
+.listing-card {
+    border: none !important;
+    margin-bottom: 1rem;
+}
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100%;
+    object-fit: cover !important;
+
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text p {
+    font-weight: 400;
+}
+
+.listing-link {
+    text-decoration: none;;
+}
+/* .listing-link:hover {
+    text-decoration: underline;
+    background-color: antiquewhite;
+} */
+
+.card-img-overlay {
+    opacity: 0;
+}
+.card-img-overlay:hover {
+    opacity:0.2;
+    background-color: white;
+}
+
+/* New listing page */
+.add-btn {
+    background-color: #e22121;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #39e282;
+}
+
+/* Edit listing page */
+.edit-btn {
+    background-color: #222222;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #555555;
+}
+
+/* Show listing page */
+.show-img{
+    height: 50vh;
+    width: 100%;
+}
+
+.btn-del{
+    background-color: #e22121;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
