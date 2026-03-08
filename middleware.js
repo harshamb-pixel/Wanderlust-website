@@ -64,7 +64,7 @@ module.exports.validateListing = (req,res,next) => {
     reviewId = reviewId.trim();
     const review = await Review.findById(reviewId);
 
-    if(!req.user || !review.author.equals(req.user._id)){
+    if(!review.author.equals(req.user._id)){
         req.flash("error", "You are not the author of this review!");
         return res.redirect(`/listings/${id}`);
     }

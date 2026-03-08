@@ -31,9 +31,7 @@ router.get("/:id",
     .populate({
         path: "reviews",
         populate: {
-            path: "author",
-            select: "username"
-        }
+            path: "author" }
     })
     .populate("owner"); 
     if(!listing){
