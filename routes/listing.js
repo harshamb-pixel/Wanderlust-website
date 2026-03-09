@@ -6,28 +6,46 @@ const { listingSchema } = require("../Schema.js");
 const Listing = require('../models/listing.js'); // import the "Listing" model from the "models/listing.js" file
 const flash = require("connect-flash");
 const { isLoggedIn, isOwner,validateListing } = require("../middleware.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
+
 
 const listingController = require("../controllers/listings.js");
 
-//Index Route
-router.get("/", 
-    wrapAsync( listingController.index ) );
+router.route("/" )
+    .get(wrapAsync( listingController.index ) ) //index route
+    .post(                                      //create route
+    isLoggedIn,
+    validateListing,
+    upload.single('listing[image]'),
+    wrapAsync(listingController.createListing)
+);
 
 //new route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-//Show Route
-router.get("/:id",
+
+router
+    .route("/:id") //Show Route
+    .get(
     isLoggedIn,
-    wrapAsync(listingController.showListing)
+    wrapAsync(listingController.showListing))
+
+    .put(  //update route
+    isLoggedIn,
+    isOwner,
+    validateListing,
+    wrapAsync(listingController.updateListing)
+)
+
+.delete(  //delete route
+    isLoggedIn,
+    isOwner,
+    wrapAsync(listingController.destroyListing)
 );
 
-//create route
-router.post("/",
-    isLoggedIn,
-    validateListing,
-    wrapAsync(listingController.createListing)
-);
+
 
 //edit route
 router.get("/:id/edit",
@@ -36,20 +54,6 @@ router.get("/:id/edit",
     wrapAsync(listingController.renderEditForm)
 );
 
-//update route
-router.put("/:id",
-    isLoggedIn,
-    isOwner,
-    validateListing,
-    wrapAsync(listingController.updateListing)
-);
 
-
-//delete route
-router.delete("/:id",
-    isLoggedIn,
-    isOwner,
-    wrapAsync(listingController.destroyListing)
-);
 
 module.exports = router;
