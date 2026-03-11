@@ -1,9 +1,9 @@
-if(process.env.NODE_ENV !== "production"){
-    require('dotenv').config();
-}
-
 require('dotenv').config();
-console.log(process.env.SECRET);
+
+console.log(process.env.ATLASDB_URL);  // check this instead of SECRET
+
+// require('dotenv').config();
+// console.log(process.env.SECRET);
 
 const express = require("express");
 const app = express();
@@ -13,6 +13,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require ("passport");
 const LocalStrategy = require("passport-local");
@@ -20,11 +21,14 @@ const User = require("./models/user.js");
 
 
 
+
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const  MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";  // MongoDB connection URL and it creates a collection named "wanderlust" if it doesn't exist
+// const  MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";  // MongoDB connection URL and it creates a collection named "wanderlust" if it doesn't exist
+
+const dbUrl = process.env.ATLASDB_URL;
 
 main()
 .then((res) =>{
@@ -35,7 +39,7 @@ main()
 });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(dbUrl);
 }
 
 app.set('view engine', 'ejs'); // Set EJS as the view engine for rendering templates
@@ -45,8 +49,21 @@ app.use(methodOverride('_method')); // Middleware to override HTTP methods using
 app.engine('ejs', ejsMate); // Set EJS as the template engine for rendering views
 app.use(express.static(path.join(__dirname, '/public'))); // Serve static files from the "public" directory
 
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    touchAfter : 24*60*60, // time period in seconds
+    crypto : {
+        secret : process.env.SECRET ,
+    },
+});
+
+store.on("error", () => {
+    console.error("MongoDB session store error",err);
+});
+
 const sessionOptions ={
-    secret : "mysupersecretcode",
+    store,
+    secret : process.env.SECRET ,
     resave : false,
     saveUninitialized : true,
     cookie: {
@@ -56,9 +73,10 @@ const sessionOptions ={
     }
 };
 
-app.get("/",(req, res) => {
-    res.send("Hi, I am the root");
-});
+// app.get("/",(req, res) => {
+//     res.send("Hi, I am the root");
+// });
+
 
 
 app.use(session(sessionOptions));
