@@ -57,7 +57,7 @@ const store = MongoStore.create({
     },
 });
 
-store.on("error", () => {
+store.on("error", (err) => {
     console.error("MongoDB session store error",err);
 });
 
@@ -101,6 +101,9 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
+app.get("/", (req,res)=>{
+    res.redirect("/listings");
+});
 // app.get("/demouser", async (req,res) => {
 //      let fakeUser = new User({
 //         email : "student@example.com",
@@ -131,10 +134,12 @@ app.use((req,res,next) => {
 
 app.use((err, req,res,next) => {
     let { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).render("error.ejs",{message});
+    res.status(statusCode).render("error",{message});
 });
 
 
-app.listen(8080, () => {  //start the server on port 8080   
-    console.log('Server is running on port 8080');
+const port = process.env.PORT || 8080;
+
+app.listen(port, ()=>{
+    console.log("Server is running");
 });
