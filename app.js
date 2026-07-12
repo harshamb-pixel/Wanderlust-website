@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-console.log(process.env.ATLASDB_URL);  // check this instead of SECRET
+ // check this instead of SECRET
 
 // require('dotenv').config();
 // console.log(process.env.SECRET);
